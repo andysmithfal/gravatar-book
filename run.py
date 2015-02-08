@@ -67,11 +67,18 @@ a = True
 while a is True:
 	book = raw_input('Book Number: ')
 
-	if book == 'end':
+	if book == 'exit':
 		sys.exit()
-	
+	elif len(book) <= 10:
+		print "Must be book barcode or ISBN 10 characters long"
 	else:
-		downloadBook(book)
+		try:
+			book = int(book)
+		except ValueError:
+			print "Must be a book barcode/ISBN excluding letters or dashes"
+		else:
+			book = str(book)
+			downloadBook(book)
 
 
 
