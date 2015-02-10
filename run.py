@@ -27,9 +27,9 @@ def getHashUrl(aobject):
 	retro = generateGravs(avatar_hash, "retro")
 	monster = generateGravs(avatar_hash, "monsterid")
 
-	urllib.urlretrieve(identicon, 'img/'+b.book_id+'_identicon.png')
-	urllib.urlretrieve(retro, 'img/'+b.book_id+'_retro.png')
-	urllib.urlretrieve(monster, 'img/'+b.book_id+'_monster.png')
+	urllib.urlretrieve(identicon, 'img/raw/'+b.book_id+'_identicon.png')
+	urllib.urlretrieve(retro, 'img/raw/'+b.book_id+'_retro.png')
+	urllib.urlretrieve(monster, 'img/raw/'+b.book_id+'_monster.png')
 
 	print "Saved images to folder"
 	return identicon
@@ -50,8 +50,10 @@ def downloadBook(barcode):
 		return
 	else:		
 		for book in json['data']:
-			avatar_hash = hashlib.md5(book['isbn10'].encode('utf-8')).hexdigest()
 			
+			# avatar_hash = hashlib.md5(book['isbn10'].encode('utf-8')).hexdigest()
+			avatar_hash = book['isbn10']
+
 			b = Book(book['title'], book['summary'], book['book_id'], book['isbn10'], avatar_hash, '')
 			
 			b.avatar_url = getHashUrl(b)
@@ -69,8 +71,8 @@ while a is True:
 
 	if book == 'exit':
 		sys.exit()
-	elif len(book) <= 10:
-		print "Must be book barcode or ISBN 10 characters long"
+	elif len(book) < 10:
+		print "Must be book barcode or ISBN 10 or 13 characters long"
 	else:
 		try:
 			book = int(book)
